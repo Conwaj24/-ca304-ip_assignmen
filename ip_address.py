@@ -2,8 +2,13 @@
 
 class ip_address_v4():
     def __init__(self, addr):
-        #TODO type checking of input
-        self.set_addr_string(addr)
+        if isinstance(addr, str):
+            self.set_addr_string(addr)
+        elif isinstance(addr, int):
+            self.set_addr_int(addr)
+        else:
+            pass
+            #TODO: throw exception here
 
     def set_addr_string(self, addr: str):
         octets = [int(octet) for octet in addr.split('.')]
@@ -32,9 +37,9 @@ class ip_address_v4():
         return self.value
 
     def __str__(self):
-        if self.string:
+        if hasattr(self, 'string'):
             return self.string
-        elif self.octets:
+        elif hasattr(self, "octets"):
             return '.'.join([str(octet) for octet in self.octets])
         else:
             return
@@ -70,6 +75,23 @@ def main():
     assert(ip0 <= ip2)
     assert(ip3 >= ip3)
     assert(ip4 == 0xffffffff)
+
+    print(ip4)
+    print(int(ip0), int(ip1), int(ip2), int(ip3), int(ip4))
+    print(ip3[1])
+
+    ip0 = ip_address_v4(0)
+    ip1 = ip_address_v4(1)
+    ip2 = ip_address_v4(0xff)
+    ip3 = ip_address_v4(3232235778)
+    ip4 = ip_address_v4(0xffffffff)
+
+    assert(ip0 == 0)
+    assert(ip0 < ip1)
+    assert(ip4 > ip3)
+    assert(ip0 <= ip2)
+    assert(ip3 >= ip3)
+    assert(str(ip4) == "255.255.255.255")
 
     print(ip4)
     print(int(ip0), int(ip1), int(ip2), int(ip4))
