@@ -7,8 +7,7 @@ class ip_address_v4():
         elif isinstance(addr, int):
             self.set_addr_int(addr)
         else:
-            pass
-            #TODO: throw exception here
+            raise TypeError("addr must be of type str or int, not {}".format(type(addr)))
 
     def set_addr_string(self, addr: str):
         octets = [int(octet) for octet in addr.split('.')]
@@ -55,6 +54,12 @@ def main():
     ip2 = ip_address_v4("0.0.0.255")
     ip3 = ip_address_v4("192.168.1.2")
     ip4 = ip_address_v4("255.255.255.255")
+
+    try:
+        ip_address_v4(0.1)
+    except TypeError:
+        pass
+
 
     assert(ip0 == 0)
     assert(ip0 < ip1)
