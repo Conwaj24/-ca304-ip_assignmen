@@ -15,7 +15,6 @@ class ip_address_v4():
         assert len(octets) == 4
         assert all([0 <= i and i <= 0xff for i in octets])
 
-        self.string = addr
         self.octets = octets
         self.value = sum([self.octets[i] * 0x100 ** (3-i) for i in range(4)])
 
@@ -24,19 +23,13 @@ class ip_address_v4():
         self.value = addr
 
         self.octets = [self.value & (0xff << 8 * i) >> 8 * i for i in range(4)][::-1]
-        self.string = str(self)
 
 
     def __int__(self):
         return self.value
 
     def __str__(self):
-        if hasattr(self, 'string'):
-            return self.string
-        elif hasattr(self, "octets"):
-            return '.'.join([str(octet) for octet in self.octets])
-        else:
-            return
+        return '.'.join([str(octet) for octet in self.octets])
 
     def __lt__(self, other):
         return int(self) < int(other)
