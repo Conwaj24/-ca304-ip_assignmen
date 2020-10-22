@@ -18,6 +18,15 @@ class ip_address_v4():
         assert 0 <= addr and addr <= 0xffffffff
         self.value = addr
 
+        #self.octets = [self.value & (0xff000000 << 0o10 *) for i in range(4)
+        self.octets = [
+                self.value & 0xff000000 >> 24,
+                self.value & 0xff0000 >> 16,
+                self.value & 0xff00 >> 8,
+                self.value & 0xff
+                ]
+        self.string = str(self)
+
 
     def __int__(self):
         return self.value
