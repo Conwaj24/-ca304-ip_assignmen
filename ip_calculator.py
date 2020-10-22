@@ -1,6 +1,14 @@
 #!/bin/env python
 from ip_address import ip_address_v4 as ip_address
 
+ip_class_table = {
+        'A':{"prefix":0b1000000, "netbits":7, "hostbits":24},
+        'B':{"prefix":0b1100000, "netbits":14, "hostbits":16},
+        'C':{"prefix":0b1110000, "netbits":21, "hostbits":8},
+        'E':{"prefix":0b1111000, "netbits":None, "hostbits":None},
+        'F':{"prefix":0b1111100, "netbits":None, "hostbits":None}
+}
+
 def get_ip_addr_class(ipaddr: ip_address):
     if ipaddr[0] < 0b1000000:
         return 'A'
