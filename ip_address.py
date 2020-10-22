@@ -23,13 +23,7 @@ class ip_address_v4():
         assert 0 <= addr and addr <= 0xffffffff
         self.value = addr
 
-        #self.octets = [self.value & (0xff000000 << 0o10 *) for i in range(4)
-        self.octets = [
-                self.value & 0xff000000 >> 24,
-                self.value & 0xff0000 >> 16,
-                self.value & 0xff00 >> 8,
-                self.value & 0xff
-                ]
+        self.octets = [self.value & (0xff << 8 * i) >> 8 * i for i in range(4)][::-1]
         self.string = str(self)
 
 
@@ -94,7 +88,7 @@ def main():
     assert(str(ip4) == "255.255.255.255")
 
     print(ip4)
-    print(int(ip0), int(ip1), int(ip2), int(ip4))
+    print(int(ip0), int(ip1), int(ip2), int(ip3), int(ip4))
     print(ip3[1])
 
 if __name__ == "__main__":
