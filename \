@@ -1,8 +1,7 @@
 #!/bin/env python
 
 class ip_address_v4():
-    def __init__(self, addr):
-        #TODO type checking of input
+    def __init__(self, addr: str):
         self.set_addr_string(addr)
 
     def set_addr_string(self, addr: str):
@@ -12,7 +11,7 @@ class ip_address_v4():
 
         self.string = addr
         self.octets = octets
-        self.value = sum([self.octets[i] * 0x100 ** (3-i) for i in range(4)])
+        self.value = sum([self.octets[i] * 0xff ** (3-i) for i in range(4)])
 
     def set_addr_int(self, addr: int):
         assert 0 <= addr and addr <= 0xffffffff
@@ -48,6 +47,8 @@ class ip_address_v4():
     def __getitem__(self,i):
         return self.octets[i]
 
+
+
 def main():
     ip0 = ip_address_v4("0.0.0.0")
     ip1 = ip_address_v4("0.0.0.1")
@@ -60,6 +61,7 @@ def main():
     assert(ip4 > ip3)
     assert(ip0 <= ip2)
     assert(ip3 >= ip3)
+    print(ip4.value + " = " + 0xffffffff)
     assert(ip4 == 0xffffffff)
 
     print(ip4)
