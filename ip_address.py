@@ -45,6 +45,12 @@ class ip_address_v4():
     def __eq__(self, other):
         return int(self) == int(other)
 
+    def __add__(self, other):
+        return int(self) + int(other)
+
+    def __sub__(self, other):
+        return int(self) - int(other)
+
     def __getitem__(self,i):
         return self.octets[i]
 
