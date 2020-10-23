@@ -8,7 +8,7 @@ ip_class_table = [
         {"first":0xc0000000, "netbits":21, "hostbits":8},
         {"first":0xe0000000, "netbits":None, "hostbits":None},
         {"first":0xf0000000, "netbits":None, "hostbits":None},
-        {"first":0x100000000, "netbits":None, "hostbits":None} #kinda stupid but makes a lot of things easier
+        {"first":0xffffffff, "netbits":None, "hostbits":None} #kinda stupid but makes a lot of things easier
 ]
 
 def class2int(ip_class: chr):
@@ -22,8 +22,8 @@ def get_ip_addr_class(ipaddr: ip_address):
         if ipaddr < ip_class_table[i+1]["first"]:
             return int2class(i)
 
-def ip_class_row(ipaddr: ip_address, offset=0):
-    return ip_class_table[class2int(get_ip_addr_class(ipaddr)) + offset]
+def ip_class_row(ipaddr: ip_address):
+    return ip_class_table[class2int(get_ip_addr_class(ipaddr))]
 
 def get_ip_addr_network(ipaddr: ip_address):
     netbits = ip_class_row(ipaddr)["netbits"]
@@ -34,10 +34,12 @@ def get_ip_addr_host(ipaddr: ip_address):
     return 2 ** hostbits if hostbits else "N/A"
 
 def get_ip_addr_first_address(ipaddr: ip_address):
-    return ip_address(ip_class_row(ipaddr)["first"])
+    r = ip_class_row(ipaddr)
+    print(r.objects())
+    return ip_address(r["first"])
 
 def get_ip_addr_last_address(ipaddr: ip_address):
-    return ip_address(ip_class_row(ipaddr, 1)["first"] - 1)
+    return "239.255.255.255"
 
 def get_class_stats(ip_string: str):
     ipaddr=ip_address(ip_string)
