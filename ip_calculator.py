@@ -1,5 +1,6 @@
 #!/bin/env python
 from ip_address import ip_address_v4 as ip_address
+from sys import stdin
 
 ip_class_table = {
         'A':{"netbits":7, "hostbits":24},
@@ -41,7 +42,7 @@ def get_class_stats(ip_string: str):
 """Class: {}
 Network: {}
 Host: {}
-First adress: {}
+First address: {}
 Last address: {}""".format(
             get_ip_addr_class(ipaddr),
             get_ip_addr_network(ipaddr),
@@ -53,10 +54,11 @@ Last address: {}""".format(
 
 
 def main():
-    for line in 
-    get_class_stats("136.206.18.7")
-    get_class_stats("0.206.18.7")
-    get_class_stats("224.192.16.5")
+    for line in stdin:
+        line=line.strip()
+        print(line)
+        get_class_stats(line)
+        print()
 
 if __name__ == "__main__":
     main()

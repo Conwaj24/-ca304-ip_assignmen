@@ -1,0 +1,14 @@
+136.206.18.7
+Class: B
+Network: 16384
+Host: 65536
+First address: 128.0.0.0
+Last address: 191.255.255.255
+
+224.192.16.5
+Class: D
+Network: N/A
+Host: N/A
+First address: 224.0.0.0
+Last address: 239.255.255.255
+
