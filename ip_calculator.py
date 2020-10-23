@@ -37,7 +37,7 @@ def get_ip_addr_first_address(ipaddr: ip_address):
     return ip_address(ip_class_row(ipaddr)["first"])
 
 def get_ip_addr_last_address(ipaddr: ip_address):
-    return ip_address(ip_class_row(ipaddr, 1)["first"] - 1)
+    return ip_address(ip_class_row(ipaddr, offset=1)["first"] - 1)
 
 def get_class_stats(ip_string: str):
     ipaddr=ip_address(ip_string)
