@@ -5,26 +5,28 @@ ip_class_table = {
         'A':{"netbits":7, "hostbits":24},
         'B':{"netbits":14, "hostbits":16},
         'C':{"netbits":21, "hostbits":8},
-        'E':{"netbits":None, "hostbits":None},
-        'F':{"netbits":None, "hostbits":None}
+        'D':{"netbits":None, "hostbits":None},
+        'E':{"netbits":None, "hostbits":None}
 }
 
 def get_ip_addr_class(ipaddr: ip_address):
-    if ipaddr[0] < 0b1000000:
+    if ipaddr[0] < 0b10000000:
         return 'A'
-    if ipaddr[0] < 0b1100000:
+    if ipaddr[0] < 0b11000000:
         return 'B'
-    if ipaddr[0] < 0b1110000:
+    if ipaddr[0] < 0b11100000:
         return 'C'
-    if ipaddr[0] < 0b1111000:
+    if ipaddr[0] < 0b11110000:
         return 'D'
     return 'E'
 
 def get_ip_addr_network(ipaddr: ip_address):
-    return 16384
+    netbits = ip_class_table[get_ip_addr_class(ipaddr)]["netbits"]
+    return 2 ** netbits if netbits else "N/A"
 
 def get_ip_addr_host(ipaddr: ip_address):
-    return 65523
+    hostbits = ip_class_table[get_ip_addr_class(ipaddr)]["hostbits"]
+    return 2 ** hostbits if hostbits else "N/A"
 
 def get_ip_addr_first_address(ipaddr: ip_address):
     return "224.0.0.0"
@@ -36,11 +38,11 @@ def get_class_stats(ip_string: str):
     ipaddr=ip_address(ip_string)
 
     print(
-"""Class: %s
-Network: %i
-Host: %i
-First adress: %s
-Last address: %s """ % (
+"""Class: {}
+Network: {}
+Host: {}
+First adress: {}
+Last address: {}""".format(
             get_ip_addr_class(ipaddr),
             get_ip_addr_network(ipaddr),
             get_ip_addr_host(ipaddr),
@@ -51,6 +53,7 @@ Last address: %s """ % (
 
 
 def main():
+    for line in 
     get_class_stats("136.206.18.7")
     get_class_stats("0.206.18.7")
     get_class_stats("224.192.16.5")
