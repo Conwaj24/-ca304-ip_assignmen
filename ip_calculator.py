@@ -2,14 +2,6 @@
 from ip_address import ip_address_v4 as ip_address
 from sys import stdin
 
-ip_class_table = {
-        'A':{"netbits":7, "hostbits":24},
-        'B':{"netbits":14, "hostbits":16},
-        'C':{"netbits":21, "hostbits":8},
-        'D':{"netbits":None, "hostbits":None},
-        'E':{"netbits":None, "hostbits":None}
-}
-
 def get_ip_addr_class(ipaddr: ip_address):
     if ipaddr[0] < 0b10000000:
         return 'A'
@@ -21,12 +13,23 @@ def get_ip_addr_class(ipaddr: ip_address):
         return 'D'
     return 'E'
 
+ip_class_table = {
+        'A':{"netbits":7, "hostbits":24},
+        'B':{"netbits":14, "hostbits":16},
+        'C':{"netbits":21, "hostbits":8},
+        'D':{"netbits":None, "hostbits":None},
+        'E':{"netbits":None, "hostbits":None}
+}
+
+def ip_class_row(ipaddr: ip_address):
+    return ip_class_table[get_ip_addr_class(ipaddr)]
+
 def get_ip_addr_network(ipaddr: ip_address):
-    netbits = ip_class_table[get_ip_addr_class(ipaddr)]["netbits"]
+    netbits = ip_class_row(ipaddr)["netbits"]
     return 2 ** netbits if netbits else "N/A"
 
 def get_ip_addr_host(ipaddr: ip_address):
-    hostbits = ip_class_table[get_ip_addr_class(ipaddr)]["hostbits"]
+    hostbits = ip_class_row(ipaddr)["hostbits"]
     return 2 ** hostbits if hostbits else "N/A"
 
 def get_ip_addr_first_address(ipaddr: ip_address):
