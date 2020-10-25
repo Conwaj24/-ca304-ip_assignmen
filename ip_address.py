@@ -52,8 +52,8 @@ class ip_address_v4():
     def __sub__(self, other): # -
         return type(self)(int(self) - int(other))
 
-    def __and__(self, other): # ^
-        return type(self)(int(self) - int(other))
+    def __and__(self, other): # &
+        return ip_address_v4((int(self) & int(other)))
 
     def __getitem__(self,i):
         return self.octets[i]

@@ -60,7 +60,7 @@ def subnet_block_size(ipcidr: ip_address_cidr):
     return 0x100000000 - int(ipcidr.mask)
 
 def get_valid_subnet_ips(ipcidr: ip_address_cidr):
-    return [ip_address("192.168.10.0"), ip_address("192.168.10.64"), ip_address("192.168.10.128"), ip_address("192.168.10.192")]
+    return [(ipcidr & 0xffffff00) + sub for sub in range(0, 0xff, subnet_block_size(ipcidr))]
     
 def get_subnet_count(ipcidr: ip_address_cidr):
     return len(get_valid_subnet_ips(ipcidr))
@@ -86,7 +86,6 @@ def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
             ip_address(subnet_mask)
     )
 
-    print(subnet_block_size(ipcidr))
     print(
 """Address: {}
 Subnets: {}
