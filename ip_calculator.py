@@ -1,5 +1,6 @@
 #!/bin/env python
 from ip_address import ip_address_v4 as ip_address, ip_address_cidr
+from common import list_add_and_str
 from sys import stdin
 
 ip_class_table = [
@@ -55,24 +56,29 @@ Last address: {}""".format(
         )
     )
 
+def subnet_block_size(ipcidr: ip_address_cidr):
+    return 0x100000000 - int(ipcidr.mask)
+
+def get_valid_subnet_ips(ipcidr: ip_address_cidr):
+    return [ip_address("192.168.10.0"), ip_address("192.168.10.64"), ip_address("192.168.10.128"), ip_address("192.168.10.192")]
+    
 def get_subnet_count(ipcidr: ip_address_cidr):
-    return 2 ** (ipcidr.netbits - 24)
+    return len(get_valid_subnet_ips(ipcidr))
 
 def get_addressable_hosts_per_subnet(ipcidr: ip_address_cidr):
-    return 2 ** (32 - ipcidr.netbits) - 2
+    return subnet_block_size(ipcidr) - 2
 
 def get_valid_subnets(ipcidr: ip_address_cidr):
-    subnet_block_size = 0xffffffff - ipcidr.mask
-    return ["192.168.10.0", "192.168.10.64", "192.168.10.128", "192.168.10.192"]
+    return list_add_and_str( get_valid_subnet_ips(ipcidr) )
 
 def get_broadcast_addresses(ipcidr: ip_address_cidr):
-    return ["192.168.10.63","192.168.10.127","192.168.10.191","192.168.10.255"]
+    return list_add_and_str( get_valid_subnet_ips(ipcidr), subnet_block_size(ipcidr) - 1 )
 
 def get_first_addresses(ipcidr: ip_address_cidr):
-    return ["192.168.10.1","192.168.10.65","192.168.10.129","192.168.10.193"]
+    return list_add_and_str( get_valid_subnet_ips(ipcidr), 1 )
 
 def get_last_addresses(ipcidr: ip_address_cidr):
-    return ["192.168.10.62","192.168.10.126","192.168.10.190","192.168.10.254"]
+    return list_add_and_str( get_valid_subnet_ips(ipcidr), subnet_block_size(ipcidr) - 2 )
 
 def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
     ipcidr = ip_address_cidr(
@@ -80,6 +86,7 @@ def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
             ip_address(subnet_mask)
     )
 
+    print(subnet_block_size(ipcidr))
     print(
 """Address: {}
 Subnets: {}
