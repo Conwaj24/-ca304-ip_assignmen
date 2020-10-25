@@ -1,5 +1,5 @@
 #!/bin/env python
-from ip_address import ip_address_v4 as ip_address
+from ip_address import ip_address_v4 as ip_address, ip_address_cidr
 from sys import stdin
 
 ip_class_table = [
@@ -75,25 +75,30 @@ def get_last_addresses(ipaddr: ip_address):
     return ["192.168.10.62","192.168.10.126","192.168.10.190","192.168.10.254"]
 
 def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
-    ipaddr=ip_address(ip_class_c_string)
+    ipcidr = ip_address_cidr(
+            ip_class_c_string,
+            ip_address(subnet_mask)
+    )
+
     try:
-        assert(get_ip_addr_class(ipaddr) == 'C')
+        assert(get_ip_addr_class(ipcidr) == 'C')
     except AssertionError:
         print("Error: IP address must be class C")
     print(
-"""Address: 192.168.10.0/26
+"""Address: {}
 Subnets: {}
 Addressable hosts per subnet: {}
 Valid subnets: {}
 Broadcast addresses: {}
 First addresses: {}
 Last addresses: {}""".format(
-            get_subnet_count(ipaddr),
-            get_addressable_hosts_per_subnet(ipaddr),
-            get_valid_subnets(ipaddr),
-            get_broadcast_addresses(ipaddr),
-            get_first_addresses(ipaddr),
-            get_last_addresses(ipaddr)
+            ipcidr,
+            get_subnet_count(ipcidr),
+            get_addressable_hosts_per_subnet(ipcidr),
+            get_valid_subnets(ipcidr),
+            get_broadcast_addresses(ipcidr),
+            get_first_addresses(ipcidr),
+            get_last_addresses(ipcidr)
         )
     )
 
