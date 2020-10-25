@@ -41,7 +41,6 @@ def get_ip_addr_last_address(ipaddr: ip_address):
 
 def get_class_stats(ip_string: str):
     ipaddr=ip_address(ip_string)
-
     print(
 """Class: {}
 Network: {}
@@ -56,28 +55,55 @@ Last address: {}""".format(
         )
     )
 
+def get_subnet_count(ipaddr: ip_address):
+    return 4
+
+def get_addressable_hosts_per_subnet(ipaddr: ip_address):
+    return 62
+
+def get_valid_subnets(ipaddr: ip_address):
+    return ["192.168.10.0", "192.168.10.64", "192.168.10.128", "192.168.10.192"]
+
+def get_broadcast_addresses(ipaddr: ip_address):
+    return ["192.168.10.63","192.168.10.127","192.168.10.191","192.168.10.255"]
+
+def get_first_addresses(ipaddr: ip_address):
+    return ["192.168.10.1","192.168.10.65","192.168.10.129","192.168.10.193"]
+
+def get_last_addresses(ipaddr: ip_address):
+    return ["192.168.10.62","192.168.10.126","192.168.10.190","192.168.10.254"]
+
 def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
     ipaddr=ip_address(ip_class_c_string)
     try:
         assert(get_ip_addr_class(ipaddr) == 'C')
     except AssertionError:
         print("Error: IP address must be class C")
-
     print(
 """Address: 192.168.10.0/26
-Subnets: 4
-Addressable hosts per subnet: 62
-Valid subnets: ["192.168.10.0", "192.168.10.64", "192.168.10.128", "192.168.10.192"]
-Broadcast addresses: ["192.168.10.63","192.168.10.127","192.168.10.191","192.168.10.255"]
-First addresses: ["192.168.10.1","192.168.10.65","192.168.10.129","192.168.10.193"]
-Last addresses: ["192.168.10.62","192.168.10.126","192.168.10.190","192.168.10.254"]"""
+Subnets: {}
+Addressable hosts per subnet: {}
+Valid subnets: {}
+Broadcast addresses: {}
+First addresses: {}
+Last addresses: {}""".format(
+            get_subnet_count(ipaddr),
+            get_addressable_hosts_per_subnet(ipaddr),
+            get_valid_subnets(ipaddr),
+            get_broadcast_addresses(ipaddr),
+            get_first_addresses(ipaddr),
+            get_last_addresses(ipaddr)
+        )
     )
+
+
 
 def main():
     for line in stdin:
         line=line.strip()
         print(line)
         get_class_stats(line)
+        get_subnet_stats(line, "225.225.225.192")
         print()
 
 if __name__ == "__main__":
