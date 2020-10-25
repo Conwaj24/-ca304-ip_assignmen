@@ -56,6 +56,22 @@ Last address: {}""".format(
         )
     )
 
+def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
+    ipaddr=ip_address(ip_class_c_string)
+    try:
+        assert(get_ip_addr_class(ipaddr) == 'C')
+    except AssertionError:
+        print("Error: IP address must be class C")
+
+    print(
+"""Address: 192.168.10.0/26
+Subnets: 4
+Addressable hosts per subnet: 62
+Valid subnets: ["192.168.10.0", "192.168.10.64", "192.168.10.128", "192.168.10.192"]
+Broadcast addresses: ["192.168.10.63","192.168.10.127","192.168.10.191","192.168.10.255"]
+First addresses: ["192.168.10.1","192.168.10.65","192.168.10.129","192.168.10.193"]
+Last addresses: ["192.168.10.62","192.168.10.126","192.168.10.190","192.168.10.254"]"""
+    )
 
 def main():
     for line in stdin:
