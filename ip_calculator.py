@@ -56,6 +56,7 @@ Last address: {}""".format(
     )
 
 def get_subnet_count(ipaddr: ip_address):
+
     return 4
 
 def get_addressable_hosts_per_subnet(ipaddr: ip_address):
@@ -96,14 +97,12 @@ Last addresses: {}""".format(
         )
     )
 
-
-
 def main():
     for line in stdin:
         line=line.strip()
         print(line)
         get_class_stats(line)
-        get_subnet_stats(line, "225.225.225.192")
+        get_subnet_stats(line, "255.255.255.192")
         print()
 
 if __name__ == "__main__":

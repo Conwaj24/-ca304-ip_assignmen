@@ -54,6 +54,15 @@ class ip_address_v4():
     def __getitem__(self,i):
         return self.octets[i]
 
+class ip_address_cidr(ip_address_v4):
+    def __init__(self, addr, mask: ip_address_v4):
+        super().__init__(addr)
+        self.mask = mask
+
+    def __str__(self):
+        return "{}/{}".format(super().__str__(), 0)
+
+
 def main():
     ip0 = ip_address_v4("0.0.0.0")
     ip1 = ip_address_v4("0.0.0.1")
@@ -83,6 +92,9 @@ def main():
     assert(str(ip2) == str(ip_address_v4(0xff)))
     assert(str(ip3) == str(ip_address_v4(3232235778)))
     assert(str(ip4) == str(ip_address_v4(0xffffffff)))
+
+    ipc = ip_address_cidr("192.168.10.0", ip_address_v4("255.255.255.192"))
+    print(ipc)
 
 if __name__ == "__main__":
     main()
