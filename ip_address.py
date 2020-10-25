@@ -1,5 +1,7 @@
 #!/bin/env python
 
+from binutils import leading_1s
+
 class ip_address_v4():
     def __init__(self, addr):
         if isinstance(addr, str):
@@ -22,7 +24,6 @@ class ip_address_v4():
         self.value = addr
 
         self.octets = [(self.value & (0xff << 8 * i)) >> 8 * i for i in range(4)][::-1]
-
 
     def __int__(self):
         return self.value
@@ -60,7 +61,7 @@ class ip_address_cidr(ip_address_v4):
         self.mask = mask
 
     def __str__(self):
-        return "{}/{}".format(super().__str__(), 0)
+        return "{}/{}".format(super().__str__(), leading_1s(int(self.mask)))
 
 
 def main():
