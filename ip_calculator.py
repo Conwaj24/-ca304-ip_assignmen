@@ -80,10 +80,6 @@ def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
             ip_address(subnet_mask)
     )
 
-    try:
-        assert(get_ip_addr_class(ipcidr) == 'C')
-    except AssertionError:
-        print("Error: IP address must be class C")
     print(
 """Address: {}
 Subnets: {}
