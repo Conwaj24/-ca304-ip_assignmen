@@ -31,26 +31,29 @@ class ip_address_v4():
     def __str__(self):
         return '.'.join([str(octet) for octet in self.octets])
 
-    def __lt__(self, other):
+    def __lt__(self, other): # <
         return int(self) < int(other)
 
-    def __gt__(self, other):
+    def __gt__(self, other): # >
         return int(self) > int(other)
 
-    def __le__(self, other):
+    def __le__(self, other): # <=
         return int(self) <= int(other)
 
-    def __ge__(self, other):
+    def __ge__(self, other): # >=
         return int(self) >= int(other)
 
-    def __eq__(self, other):
+    def __eq__(self, other): # ==
         return int(self) == int(other)
 
-    def __add__(self, other):
-        return int(self) + int(other)
+    def __add__(self, other): # +
+        return type(self)(int(self) + int(other))
 
-    def __sub__(self, other):
-        return int(self) - int(other)
+    def __sub__(self, other): # -
+        return type(self)(int(self) - int(other))
+
+    def __and__(self, other): # ^
+        return type(self)(int(self) - int(other))
 
     def __getitem__(self,i):
         return self.octets[i]
@@ -59,9 +62,10 @@ class ip_address_cidr(ip_address_v4):
     def __init__(self, addr, mask: ip_address_v4):
         super().__init__(addr)
         self.mask = mask
+        self.netbits = leading_1s(int(self.mask))
 
     def __str__(self):
-        return "{}/{}".format(super().__str__(), leading_1s(int(self.mask)))
+        return "{}/{}".format(super().__str__(), self.netbits)
 
 
 def main():
