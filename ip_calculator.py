@@ -55,23 +55,23 @@ Last address: {}""".format(
         )
     )
 
-def get_subnet_count(ipaddr: ip_address):
+def get_subnet_count(ipcidr: ip_address_cidr):
+    return 2 ** (ipcidr.netbits - 24)
 
-    return 4
+def get_addressable_hosts_per_subnet(ipcidr: ip_address_cidr):
+    return 2 ** (32 - ipcidr.netbits) - 2
 
-def get_addressable_hosts_per_subnet(ipaddr: ip_address):
-    return 62
-
-def get_valid_subnets(ipaddr: ip_address):
+def get_valid_subnets(ipcidr: ip_address_cidr):
+    subnet_block_size = 0xffffffff - ipcidr.mask
     return ["192.168.10.0", "192.168.10.64", "192.168.10.128", "192.168.10.192"]
 
-def get_broadcast_addresses(ipaddr: ip_address):
+def get_broadcast_addresses(ipcidr: ip_address_cidr):
     return ["192.168.10.63","192.168.10.127","192.168.10.191","192.168.10.255"]
 
-def get_first_addresses(ipaddr: ip_address):
+def get_first_addresses(ipcidr: ip_address_cidr):
     return ["192.168.10.1","192.168.10.65","192.168.10.129","192.168.10.193"]
 
-def get_last_addresses(ipaddr: ip_address):
+def get_last_addresses(ipcidr: ip_address_cidr):
     return ["192.168.10.62","192.168.10.126","192.168.10.190","192.168.10.254"]
 
 def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
