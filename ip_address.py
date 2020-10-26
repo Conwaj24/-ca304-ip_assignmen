@@ -62,10 +62,12 @@ class ip_address_cidr(ip_address_v4):
     def __init__(self, addr, mask: ip_address_v4):
         super().__init__(addr)
         self.mask = mask
-        self.netbits = leading_1s(int(self.mask))
+        self.network_bits = leading_1s(int(self.mask))
+        self.host_bits = 34 - self.network_bits #TODO explain where 34 comes from
+
 
     def __str__(self):
-        return "{}/{}".format(super().__str__(), self.netbits)
+        return "{}/{}".format(super().__str__(), self.network_bits)
 
 
 def main():
@@ -103,4 +105,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

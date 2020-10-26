@@ -60,10 +60,14 @@ def subnet_block_size(ipcidr: ip_address_cidr):
     return 0x100000000 - int(ipcidr.mask)
 
 def get_valid_subnet_ips(ipcidr: ip_address_cidr):
-    return [(ipcidr & 0xffffff00) + sub for sub in range(0, 0xff, subnet_block_size(ipcidr))]
+    subnet = ipcidr & ipcidr.mask
+    max_address = subnet + 2 ** ipcidr.host_bits
+    while subnet < max_address:
+        yield subnet
+        subnet += subnet_block_size(ipcidr)
     
 def get_subnet_count(ipcidr: ip_address_cidr):
-    return len(get_valid_subnet_ips(ipcidr))
+    return len(get_valid_subnets(ipcidr))
 
 def get_addressable_hosts_per_subnet(ipcidr: ip_address_cidr):
     return subnet_block_size(ipcidr) - 2
@@ -109,9 +113,8 @@ def main():
         line=line.strip()
         print(line)
         get_class_stats(line)
-        get_subnet_stats(line, "255.255.255.192")
+        get_subnet_stats(line, "255.255.192.0")
         print()
 
 if __name__ == "__main__":
     main()
-
