@@ -88,9 +88,9 @@ def get_first_addresses(ipcidr: ip_address_cidr):
 def get_last_addresses(ipcidr: ip_address_cidr):
     return list_add_and_str( get_valid_subnet_ips(ipcidr), subnet_block_size(ipcidr) - 2 )
 
-def get_subnet_stats(ip_class_c_string: str, subnet_mask: str):
+def get_subnet_stats(ip_string: str, subnet_mask: str):
     ipcidr = ip_address_cidr(
-            ip_class_c_string,
+            ip_string,
             ip_address(subnet_mask)
     )
 
@@ -112,12 +112,28 @@ Last addresses: {}""".format(
         )
     )
 
+def get_supernet_address(ipaddrs):
+    return "205.100.0.0/22"
+
+def get_supernet_mask(ipaddrs):
+    return "255.255.252.0"
+
+def get_supernet_stats(ip_strings: list):
+    ips = [ip_address(s) for s in ip_strings]
+    print(
+"""Address: {} 
+Network Mask: {}""".format(
+            get_supernet_address(ips),
+            get_supernet_mask(ips)
+        )
+    )
+
 def main():
     for line in stdin:
         print(line.strip())
         try:
             a = unstring(line)
-            assert(a is list)
+            assert(type(a) is list)
             get_supernet_stats(a)
         except AssertionError:
             addr_strings = line.strip().split(',')
