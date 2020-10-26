@@ -57,11 +57,14 @@ Last address: {}""".format(
         )
     )
 
+def ip_inverse(ip_address):
+    return 0x100000000 - ip_address
+
 def subnet_block_size(ipcidr: ip_address_cidr):
-    return 0x100000000 - int(ipcidr.mask)
+    return inverse(int(ipcidr.mask))
 
 def get_default_mask(ipaddr: ip_address):
-    return 0x100000000 - 2 ** ip_class_row(ipaddr)["hostbits"]
+    return inverse(2 ** ip_class_row(ipaddr)["hostbits"])
 
 def get_subnet_count(ipcidr: ip_address_cidr):
     return 2 ** leading_1s(int(ipcidr.mask - get_default_mask(ipcidr)))
@@ -113,9 +116,11 @@ Last addresses: {}""".format(
     )
 
 def get_supernet_address(ipaddrs):
+    '''skeleton'''
     return "205.100.0.0/22"
 
 def get_supernet_mask(ipaddrs):
+    '''skeleton'''
     return "255.255.252.0"
 
 def get_supernet_stats(ip_strings: list):
