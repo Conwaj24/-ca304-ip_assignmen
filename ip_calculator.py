@@ -59,7 +59,11 @@ Last address: {}""".format(
 def subnet_block_size(ipcidr: ip_address_cidr):
     return 0x100000000 - int(ipcidr.mask)
 
+def get_default_mask(ipaddr: ip_address):
+    return 0x100000000 - 2 ** ip_class_row(ipaddr)["hostbits"]
+
 def get_subnet_count(ipcidr: ip_address_cidr):
+    return int(ipcidr.mask - get_default_mask(ipcidr))
     byte_remainder = int(ipcidr.network_bits) % 8
     return 2 ** (byte_remainder if byte_remainder > 0 else 8)
 
