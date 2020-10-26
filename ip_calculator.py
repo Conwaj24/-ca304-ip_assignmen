@@ -61,10 +61,10 @@ def ip_inverse(ip_address):
     return 0x100000000 - ip_address
 
 def subnet_block_size(ipcidr: ip_address_cidr):
-    return inverse(int(ipcidr.mask))
+    return ip_inverse(int(ipcidr.mask))
 
 def get_default_mask(ipaddr: ip_address):
-    return inverse(2 ** ip_class_row(ipaddr)["hostbits"])
+    return ip_inverse(2 ** ip_class_row(ipaddr)["hostbits"])
 
 def get_subnet_count(ipcidr: ip_address_cidr):
     return 2 ** leading_1s(int(ipcidr.mask - get_default_mask(ipcidr)))
@@ -142,7 +142,6 @@ def main():
             get_supernet_stats(a)
         except AssertionError:
             addr_strings = line.strip().split(',')
-            print(addr_strings[0])
             get_class_stats(addr_strings[0])
             try:
                 get_subnet_stats(addr_strings[0], addr_strings[1])
