@@ -39,10 +39,10 @@ def unstring(s: str):
         return [unstring(e) for e in unwrap(s).split(',')]
     if stringis_string(s):
         return unwrap(s)
-    if strings_int:
-        return int(s)
-    if strings_float:
+    if stringis_float:
         return float(s)
+    if stringis_int:
+        return int(s)
     return s
 
 
