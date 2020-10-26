@@ -110,10 +110,13 @@ Last addresses: {}""".format(
 
 def main():
     for line in stdin:
-        line=line.strip()
-        print(line)
-        get_class_stats(line)
-        get_subnet_stats(line, "255.255.192.0")
+        addr_strings = line.strip().split(',')
+        print(addr_strings[0])
+        get_class_stats(addr_strings[0])
+        try:
+            get_subnet_stats(addr_strings[0], addr_strings[1])
+        except IndexError:
+            pass
         print()
 
 if __name__ == "__main__":
