@@ -1,7 +1,7 @@
 #!/bin/env python
 from ip_address import ip_address_v4 as ip_address, ip_address_cidr
 from sys import stdin
-from common import list_add_and_str
+from common import list_add_and_str, unstring
 from binutils import leading_1s
 
 ip_class_table = [
@@ -114,13 +114,19 @@ Last addresses: {}""".format(
 
 def main():
     for line in stdin:
-        addr_strings = line.strip().split(',')
-        print(addr_strings[0])
-        get_class_stats(addr_strings[0])
+        print(line.strip())
         try:
-            get_subnet_stats(addr_strings[0], addr_strings[1])
-        except IndexError:
-            pass
+            a = unstring(line)
+            assert(a is list)
+            get_supernet_stats(a)
+        except AssertionError:
+            addr_strings = line.strip().split(',')
+            print(addr_strings[0])
+            get_class_stats(addr_strings[0])
+            try:
+                get_subnet_stats(addr_strings[0], addr_strings[1])
+            except IndexError:
+                pass
         print()
 
 if __name__ == "__main__":
