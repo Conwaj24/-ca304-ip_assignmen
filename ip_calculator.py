@@ -59,16 +59,17 @@ Last address: {}""".format(
 def subnet_block_size(ipcidr: ip_address_cidr):
     return 0x100000000 - int(ipcidr.mask)
 
+def get_subnet_count(ipcidr: ip_address_cidr):
+    byte_remainder = int(ipcidr.network_bits) % 8
+    return 2 ** (byte_remainder if byte_remainder > 0 else 8)
+
 def get_valid_subnet_ips(ipcidr: ip_address_cidr):
     subnet = ipcidr & ipcidr.mask
-    max_address = subnet + 2 ** ipcidr.host_bits
+    max_address = subnet + subnet_block_size(ipcidr) * get_subnet_count(ipcidr)
     while subnet < max_address:
         yield subnet
         subnet += subnet_block_size(ipcidr)
     
-def get_subnet_count(ipcidr: ip_address_cidr):
-    return len(get_valid_subnets(ipcidr))
-
 def get_addressable_hosts_per_subnet(ipcidr: ip_address_cidr):
     return subnet_block_size(ipcidr) - 2
 

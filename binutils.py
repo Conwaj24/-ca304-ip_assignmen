@@ -8,7 +8,7 @@ def leading_1s(num):
         return first_0(num)
     except ValueError:
         return len(bin(num)) - 2
- 
+
 def main():
     assert(leading_1s(0b000000) == 0)
     assert(leading_1s(0b110000) == 2)
