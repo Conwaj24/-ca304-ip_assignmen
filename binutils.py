@@ -12,6 +12,7 @@ def leading_1s(num):
         return len(bin(num)) - 2
 
 def n1s_then_n0s(ones, zeros):
+    """return a number represented in binary as the given number of 1s followed by the givewn number of 0s"""
     return (2 ** ones - 1) * 2 ** zeros
 
 def xnor_all_with_verbose(compare, mask, *args):
@@ -37,7 +38,7 @@ def xnor_all_with(compare, mask, *args):
     return mask
 
 def xnor_all(*args):
-    """returns a number containing 0s in all bits that all args have in common and 1s in all other bits"""
+    """returns a number containing 1s in all bits that all args have in common and 0s in all other bits"""
     compare = args[-1]
     mask = ~(max(args) & 0)
     return xnor_all_with(compare, mask, *args[:-1])

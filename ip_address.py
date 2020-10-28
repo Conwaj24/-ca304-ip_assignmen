@@ -1,9 +1,11 @@
 #!/bin/env python
 
-from binutils import leading_1s
+import binutils
 
 class ip_address_v4():
     MAX = 0xffffffff
+    PARTS = 4
+
     def __init__(self, addr):
         if isinstance(addr, str):
             self.set_addr_string(addr)
@@ -21,10 +23,16 @@ class ip_address_v4():
         self.value = sum([self.octets[i] * 0x100 ** (3-i) for i in range(4)])
 
     def set_addr_int(self, addr: int):
-        assert 0 <= addr and addr <= 0xffffffff
+        assert 0 <= addr and addr <= type(self).MAX
         self.value = addr
 
         self.octets = [(self.value & (0xff << 8 * i)) >> 8 * i for i in range(4)][::-1]
+
+    def part_size(self):
+        return type(self).MAX / type(self).PARTS
+
+    def part_bits(self):
+        pass
 
     def __int__(self):
         return self.value
@@ -77,11 +85,10 @@ class ip_address_cidr(ip_address_v4):
     def __init__(self, addr, mask: ip_address_v4):
         super().__init__(addr)
         self.mask = mask
-        self.network_bits = leading_1s(int(self.mask))
+        self.network_bits = binutils.leading_1s(int(self.mask))
 
     def __str__(self):
         return "{}/{}".format(super().__str__(), self.network_bits)
-
 
 def main():
     ip0 = ip_address_v4("0.0.0.0")
