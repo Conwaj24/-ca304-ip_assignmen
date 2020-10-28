@@ -3,6 +3,7 @@
 from binutils import leading_1s
 
 class ip_address_v4():
+    MAX = 0xffffffff
     def __init__(self, addr):
         if isinstance(addr, str):
             self.set_addr_string(addr)
@@ -52,8 +53,22 @@ class ip_address_v4():
     def __sub__(self, other): # -
         return type(self)(int(self) - int(other))
 
+    def __invert__(self): # ~
+        return ip_address_v4((type(self).MAX - int(self)))
+
     def __and__(self, other): # &
-        return ip_address_v4((int(self) & int(other)))
+        return ip_address_v4(int(self) & int(other))
+
+    def __xor__(self, other): # ^
+        return ip_address_v4(int(self) ^ int(other))
+
+    def __iand__(self, other): # &=
+        self.set_addr_int(int(self) & int(other))
+        return self
+
+    def __ixor__(self, other): # ^=
+        self.set_addr_int(int(self) ^ int(other))
+        return self
 
     def __getitem__(self,i):
         return self.octets[i]

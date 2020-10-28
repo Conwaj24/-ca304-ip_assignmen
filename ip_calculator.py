@@ -2,7 +2,7 @@
 from ip_address import ip_address_v4 as ip_address, ip_address_cidr
 from sys import stdin
 from common import list_add_and_str, unstring
-from binutils import leading_1s
+import binutils
 
 ip_class_table = [
         {"first":0x00000000, "netbits":7, "hostbits":24},
@@ -67,7 +67,7 @@ def get_default_mask(ipaddr: ip_address):
     return ip_inverse(2 ** ip_class_row(ipaddr)["hostbits"])
 
 def get_subnet_count(ipcidr: ip_address_cidr):
-    return 2 ** leading_1s(int(ipcidr.mask - get_default_mask(ipcidr)))
+    return 2 ** binutils.leading_1s(int(ipcidr.mask - get_default_mask(ipcidr)))
 
 def get_valid_subnet_ips(ipcidr: ip_address_cidr):
     subnet = ipcidr & ipcidr.mask
@@ -116,12 +116,16 @@ Last addresses: {}""".format(
     )
 
 def get_supernet_address(ipaddrs):
-    '''skeleton'''
-    return "205.100.0.0/22"
+    mask = get_supernet_mask(ipaddrs)
+    return ip_address_cidr(
+            int(ipaddrs[0] & mask),
+            mask
+        )
 
 def get_supernet_mask(ipaddrs):
-    '''skeleton'''
-    return "255.255.252.0"
+    common_bits = binutils.xnor_all(*ipaddrs)
+    leading_1s = binutils.leading_1s(common_bits)
+    return ip_address( binutils.n1s_then_n0s( leading_1s, 32 - leading_1s))
 
 def get_supernet_stats(ip_strings: list):
     ips = [ip_address(s) for s in ip_strings]
